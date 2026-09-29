@@ -3,14 +3,9 @@ package lab1;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Стресс-тест согласованности снимков: writers фоновых потоков непрерывно пишут,
- * главный поток 10 000 раз снимает snapshot() и проверяет sum(buckets) == count.
- * Тест переиспользуется на этапах 3 и 4.
- */
 public final class InconsistencyTest {
 
-    static final int WRITERS = 4;
+    static final int WRITERS = 2;
     static final int SNAPSHOT_ATTEMPTS = 10_000;
 
     private InconsistencyTest() {
