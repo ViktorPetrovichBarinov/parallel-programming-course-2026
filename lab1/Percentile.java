@@ -1,45 +1,46 @@
 package lab1;
 
 public class Percentile {
-    public final static int BUCKETS_NUMBER = 256;
-    public final static int BUCKET_SIZE = 4;
-    public final static int MAX_VALUE = BUCKETS_NUMBER * BUCKET_SIZE - 1;
-    private static final double PERCENTILE_99 = 0.99;
-    private static final double PERCENTILE_50 = 0.50;
 
-    public static int bucketOf(long value) throws IllegalArgumentException {
+    public static final int BUCKETS_NUMBER = 256;
+    public static final int BUCKET_SIZE = 4;
+    public static final int MAX_VALUE = BUCKETS_NUMBER * BUCKET_SIZE - 1;
+
+    private static final double PERCENTILE_50 = 0.50;
+    private static final double PERCENTILE_99 = 0.99;
+
+    public int bucketOf(long value) {
         if (value < 0) {
             throw new IllegalArgumentException(
                 "Value must be more than -1; value: " + value
             );
         }
-        int index;
         if (value >= MAX_VALUE) {
-            index = BUCKETS_NUMBER - 1;
-        } else {
-            index  = (int) (value / BUCKET_SIZE);
+            return BUCKETS_NUMBER - 1;
         }
-        return index;
+        return (int) (value / BUCKET_SIZE);
     }
 
-    public static int calculatePercentile99(long count, long[] bucket) {
-        return percentileCalculation(count, bucket, PERCENTILE_99);
+    public long percentile50(long count, long[] bucket) {
+        return percentile(count, bucket, PERCENTILE_50);
     }
 
-    public static int calculatePercentile50(long count, long[] bucket) {
-        return percentileCalculation(count, bucket, PERCENTILE_50);
+    public long percentile99(long count, long[] bucket) {
+        return percentile(count, bucket, PERCENTILE_99);
     }
 
-    private static int percentileCalculation(long count, long[] bucket, double percentile) {
-        long limit = (long)Math.ceil(count * percentile);
+    public long percentile(long count, long[] bucket, double percentile) {
+        if (count <= 0) {
+            return 0;
+        }
+        long limit = (long) Math.ceil(count * percentile);
         long cumulative = 0;
         for (int i = 0; i < BUCKETS_NUMBER; i++) {
             cumulative += bucket[i];
             if (cumulative >= limit) {
-                return i * BUCKET_SIZE;
+                return (long) i * BUCKET_SIZE;
             }
         }
-
-        return (BUCKETS_NUMBER - 1) * BUCKET_SIZE;
+        return (long) (BUCKETS_NUMBER - 1) * BUCKET_SIZE;
     }
 }

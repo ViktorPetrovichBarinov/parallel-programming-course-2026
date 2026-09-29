@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class SynchronizedCollector implements MetricsCollector {
 
     private final long[] buckets = new long[Percentile.BUCKETS_NUMBER];
+    private final Percentile percentile = new Percentile();
     private long count;
     private long sum;
     private long min = Long.MAX_VALUE;
@@ -15,7 +16,7 @@ public class SynchronizedCollector implements MetricsCollector {
 
     @Override
     public synchronized void record(long value) {
-        buckets[Percentile.bucketOf(value)]++;
+        buckets[percentile.bucketOf(value)]++;
         count++;
         sum += value;
         if (value < min) {
@@ -29,8 +30,8 @@ public class SynchronizedCollector implements MetricsCollector {
     @Override
     public synchronized Snapshot snapshot() {
         long[] copy = Arrays.copyOf(buckets, Percentile.BUCKETS_NUMBER);
-        long p50 = Percentile.calculatePercentile50(count, copy);
-        long p99 = Percentile.calculatePercentile99(count, copy);
+        long p50 = percentile.percentile50(count, copy);
+        long p99 = percentile.percentile99(count, copy);
         return new Snapshot(copy, count, sum, min, max, p50, p99);
     }
 }

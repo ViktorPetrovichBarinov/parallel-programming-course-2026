@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class OneThreadMetricCollector implements MetricsCollector {
     private long[] bucket = new long[Percentile.BUCKETS_NUMBER];
+    private final Percentile percentile = new Percentile();
     private long count = 0;
     private long sum = 0;
     private long min = Long.MAX_VALUE;
@@ -17,7 +18,7 @@ public class OneThreadMetricCollector implements MetricsCollector {
         }
         count++;
         sum += value;
-        int bucketIndex = Percentile.bucketOf(value);
+        int bucketIndex = percentile.bucketOf(value);
         bucket[bucketIndex]++;
         min = Math.min(value, min);
         max = Math.max(value, max);
@@ -25,10 +26,9 @@ public class OneThreadMetricCollector implements MetricsCollector {
 
     @Override
     public Snapshot snapshot() {
-        long[] bucketCopy;
-        bucketCopy = Arrays.copyOf(bucket, Percentile.BUCKETS_NUMBER);
-        int p99 = Percentile.calculatePercentile99(count, bucketCopy);
-        int p50 = Percentile.calculatePercentile50(count, bucketCopy);
+        long[] bucketCopy = Arrays.copyOf(bucket, Percentile.BUCKETS_NUMBER);
+        long p99 = percentile.percentile99(count, bucketCopy);
+        long p50 = percentile.percentile50(count, bucketCopy);
         Snapshot snapshot = new Snapshot(
             bucketCopy, count, sum,
             min, max, p50, p99
