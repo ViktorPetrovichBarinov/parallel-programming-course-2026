@@ -4,11 +4,6 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Секундомер этапа 0: один забег = T потоков, каждый крутит record() ровно seconds секунд.
- * Потоки стартуют по защёлке, каждый считает свои вызовы в локальной переменной,
- * флаг остановки общий. Возвращает суммарную пропускную способность в оп/сек.
- */
 public final class Benchmark {
 
     static final int WARMUP_SECONDS = 5;
@@ -91,6 +86,7 @@ public final class Benchmark {
             case "one-thread" -> new OneThreadMetricCollector();
             case "sync" -> new SynchronizedCollector();
             case "empty-lock" -> new EmptyLockCollector();
+            case "striped" -> new StripedLockCollector();
             default -> throw new IllegalArgumentException("Unknown collector: " + name);
         };
     }
