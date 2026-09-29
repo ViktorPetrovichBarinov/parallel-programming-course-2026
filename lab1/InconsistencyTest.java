@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class InconsistencyTest {
 
-    static final int WRITERS = 2;
+    static final int WRITERS = 4;
     static final int SNAPSHOT_ATTEMPTS = 10_000;
 
     private InconsistencyTest() {
