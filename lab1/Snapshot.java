@@ -6,6 +6,6 @@ public record Snapshot(
     long sum,
     long min,
     long max,
-    long p50,
-    long p99
+    long p50,       //ms; bucket index * 4
+    long p99        //ms; bucket index * 4
 ) {}
