@@ -30,6 +30,7 @@ public final class ZipfGenerator {
         return values;
     }
 
+    //CDF - Cumulative Distribution Function (кумулятивная функция распределения) 
     private static double[] buildCdf() {
         int n = MAX_VALUE - MIN_VALUE + 1;
         double[] cdf = new double[n];
@@ -38,6 +39,7 @@ public final class ZipfGenerator {
             total += Math.pow(i + MIN_VALUE, -EXPONENT);
             cdf[i] = total;
         }
+        //normalaze
         for (int i = 0; i < n; i++) {
             cdf[i] /= total;
         }
@@ -56,5 +58,23 @@ public final class ZipfGenerator {
             }
         }
         return lo;
+    }
+
+    public static void main(String[] args) {
+        long[] values = generate();
+
+        long[] counter = new long[MAX_VALUE - MIN_VALUE + 1];
+        for (long value : values) {
+            counter[(int) (value - MIN_VALUE)]++;
+        }
+
+        System.out.println("Number of values: " + values.length);
+        int summary = 0;
+        for (int i = 0; i < 4; i++) {
+            System.out.println((i + MIN_VALUE) + " - " + counter[i]);
+            summary += counter[i];
+        }
+        System.out.println("summary: " + summary);
+        System.out.println("percent of all values: " + (double)summary / values.length);
     }
 }
