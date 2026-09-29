@@ -40,6 +40,6 @@ public class Percentile {
             }
         }
 
-        return MAX_VALUE;
+        return (BUCKETS_NUMBER - 1) * BUCKET_SIZE;
     }
 }
