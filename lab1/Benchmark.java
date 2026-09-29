@@ -87,6 +87,7 @@ public final class Benchmark {
             case "sync" -> new SynchronizedCollector();
             case "empty-lock" -> new EmptyLockCollector();
             case "striped" -> new StripedLockCollector();
+            case "thread-local" -> new ThreadLocalCollector();
             default -> throw new IllegalArgumentException("Unknown collector: " + name);
         };
     }
