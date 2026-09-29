@@ -89,6 +89,8 @@ public final class Benchmark {
     static MetricsCollector createCollector(String name) {
         return switch (name) {
             case "one-thread" -> new OneThreadMetricCollector();
+            case "sync" -> new SynchronizedCollector();
+            case "empty-lock" -> new EmptyLockCollector();
             default -> throw new IllegalArgumentException("Unknown collector: " + name);
         };
     }
