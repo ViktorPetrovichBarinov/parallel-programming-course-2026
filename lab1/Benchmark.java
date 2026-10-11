@@ -88,6 +88,8 @@ public final class Benchmark {
             case "empty-lock" -> new EmptyLockCollector();
             case "striped" -> new StripedLockCollector();
             case "thread-local" -> new ThreadLocalCollector();
+            case "double-buffer" -> new DoubleBufferCollector();
+            case "double-buffer-noverify" -> new DoubleBufferCollector(false);
             default -> throw new IllegalArgumentException("Unknown collector: " + name);
         };
     }
